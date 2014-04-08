@@ -864,6 +864,7 @@ label {
   line-height: 13px;
   margin-top: 8px;
   overflow: hidden;
+  padding-right: 10px;
 }
 
 .b-hotel-card__buy {

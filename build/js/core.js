@@ -35,49 +35,79 @@
             }
             $(this).removeClass('down, up').addClass(sortDirection);
             sortBy = $(this).data('sort');
-            return that.sortResults(list, sortBy, sortDirection);
+            return that.showHotels(sortBy, sortDirection);
           });
         }
       },
-      sortResults: function(list, sortBy, sortDirection) {
-        var i, rows, tempList;
-        if (sortBy == null) {
-          sortBy = 'stars';
-        }
+      sortResults: function(list, sortBy, sortDirection, limit) {
+        var i, resultList;
         if (sortDirection == null) {
           sortDirection = 'down';
         }
-        rows = list.find(".b-hotel-card").toArray().sort(function(a, b) {
-          var aWeight, bWeight;
-          aWeight = parseFloat($(a).attr('data-' + sortBy));
-          bWeight = parseFloat($(b).attr('data-' + sortBy));
-          if (sortDirection === 'down') {
-            if (aWeight > bWeight) {
-              return -1;
+        if (limit == null) {
+          limit = 10;
+        }
+        if (sortBy) {
+          list.sort(function(a, b) {
+            var aWeight, bWeight;
+            aWeight = a[sortBy];
+            bWeight = b[sortBy];
+            if (sortDirection === 'down') {
+              if (aWeight > bWeight) {
+                return -1;
+              }
+              if (aWeight < bWeight) {
+                return 1;
+              }
+            } else {
+              if (aWeight < bWeight) {
+                return -1;
+              }
+              if (aWeight > bWeight) {
+                return 1;
+              }
             }
-            if (aWeight < bWeight) {
-              return 1;
-            }
-          } else {
-            if (aWeight < bWeight) {
-              return -1;
-            }
-            if (aWeight > bWeight) {
-              return 1;
-            }
-          }
-          return 0;
-        });
-        tempList = '';
+            return 0;
+          });
+        }
+        resultList = [];
         i = 0;
-        while (i < rows.length) {
-          tempList = tempList + rows[i].outerHTML;
-          if (i === 5) {
-            tempList = tempList + $('.b-results-banner').html();
-          }
+        while (i < limit) {
+          resultList.push(list[i]);
           i++;
         }
-        return list.html(tempList);
+        return resultList;
+      },
+      prepareTemplates: function() {
+        var source;
+        source = $("#hotel-template").html();
+        this.hotel_template = Handlebars.compile(source);
+        return Handlebars.registerHelper("ifCond", function(v1, v2, options) {
+          if (v1 === v2) {
+            return options.fn(this);
+          }
+          return options.inverse(this);
+        });
+      },
+      showHotels: function(sortBy, sortDirection) {
+        var hotels, list;
+        if (sortDirection == null) {
+          sortDirection = 'down';
+        }
+        list = $('#results-items');
+        hotels = this.getHotels(sortBy, sortDirection, 10);
+        return list.html(this.hotel_template({
+          'hotels': hotels
+        })).find('[data-action=true]').addClass('b-hotel-card_action');
+      },
+      getHotels: function(sortBy, sortDirection, limit) {
+        if (sortDirection == null) {
+          sortDirection = 'down';
+        }
+        if (limit == null) {
+          limit = 10;
+        }
+        return this.sortResults(window.data.hotels, sortBy, sortDirection, limit);
       },
       peopleSelector: function() {
         var decrease, increase;
@@ -189,6 +219,8 @@
         _private.filterSort();
         _private.peopleSelector();
         _private.calendar();
+        _private.prepareTemplates();
+        _private.showHotels();
         this.Map.init();
       }
     };
