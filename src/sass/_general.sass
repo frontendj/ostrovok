@@ -1,0 +1,55 @@
+*
+  +box-sizing(border-box)
+
+body
+  -webkit-font-smoothing: antialiased !important
+  -webkit-backface-visibility: hidden
+  -moz-backface-visibility: visible
+  -ms-backface-visibility: hidden
+  position: static !important
+  top: 0px !important
+  text-align: center
+
+body, html
+  background: #F5F5F5
+  min-width: 980px
+  font-family: $font-family-base
+  font-size:  14px
+  line-height: 1
+
+.container
+  width: 960px
+  margin: 0 auto
+  position: relative
+  +clearfix
+
+.to-right
+  float: right
+
+a
+  color: $link-color
+  text-decoration: none !important
+  +single-transition(color, .2s)
+  &:visited
+    color: $link-visited-color
+  &:hover, &.js-hover
+    color: $link-hover-color
+
+input
+  outline: none
+  margin: 0
+
+input[type=search]
+  -webkit-appearance: textfield
+
+label
+  cursor: pointer
+
+.b-input
+  +border-radius(4px)
+  border: 1px solid #C1C1C3
+  position: relative
+  background-color: white
+
+.ui-datepicker
+  margin-top: 0px

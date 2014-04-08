@@ -1,0 +1,65 @@
+.b-header-selector
+  height: 25px
+  margin-top: 4px
+  position: relative
+  width:  300px
+  z-index: 1
+  &:first-child
+    margin-top: 0
+  &.active
+    z-index: 10
+
+.b-header-selector__wrap
+  position: absolute
+  background: #F5F5F5
+  top:  0
+  width:  auto
+  height: 25px
+  right:  0
+  border:  1px solid $field-border-color
+  border-bottom-color:  $field-border-bottom-color
+  +border-radius(3px)
+  padding-right: 10px
+  cursor: pointer
+  .arrow
+    position: absolute
+    right: 5px
+    top: 50%
+    margin-top: -2px
+    z-index: 3
+    .b-header-selector.active &
+      display: none
+
+.b-header-selector.active
+  .b-header-selector__wrap
+    height: auto
+    padding-right: 0
+    .b-header-selector__item
+      display: block
+    background: white
+
+.b-header-selector__item
+  height: 25px
+  line-height: 25px
+  display: none
+  font-size: 13px
+  color: $logo-blue
+  padding:  0 8px
+  position: relative
+  z-index: 5
+  &:link, &:hover, &:visited
+    color: $logo-blue
+  &.active
+    display: block
+  .b-header-selector.active &
+    &:hover
+      background: $gray-lightest
+
+.b-header-selector_currency
+  span
+    font-weight: bold
+
+.b-header-selector_lang
+  .flag
+    margin-right: 4px
+

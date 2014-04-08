@@ -1,0 +1,16 @@
+$parts: sprite-map("sprites/*.png", $layout: horizontal, $spacing: 2px)
+$parts_names: sprite_names($parts)
+
+.sprite
+  background-repeat: no-repeat
+  background-image: $parts
+  display: inline-block
+  vertical-align: middle
+  overflow: hidden
+
+@each $sprite in $parts_names
+  .sprite_#{$sprite}
+    background-position: sprite-position($parts, $sprite)
+    width: image-width("sprites/#{$sprite}.png")
+    height: image-height("sprites/#{$sprite}.png")
+

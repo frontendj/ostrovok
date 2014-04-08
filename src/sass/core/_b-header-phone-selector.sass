@@ -1,0 +1,29 @@
+.b-header-phone-selector
+  color: $logo-blue
+  font-size:  10px
+  border-bottom:  1px dotted $logo-blue
+  +inline-block
+  cursor: pointer
+  line-height: 1.1
+  &:hover
+    border-bottom-color: transparent
+
+.b-header-phone-selector__country-place
+  position: relative
+
+.b-header-phone-selector__countries
+  border:  1px solid $field-border-color
+  min-width: 80px
+  background: white
+  position: absolute
+  left: 0
+  z-index: 5
+  top: -5px
+  display: none
+
+.b-header-phone-selector__countries__item
+  font-size:  12px
+  padding: 5px
+  &:hover, &.active
+    background: $gray-lightest
+

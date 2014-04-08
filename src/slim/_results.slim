@@ -1,0 +1,57 @@
+.b-results#results
+
+  .b-results__tools
+
+    .b-results-sort#results-sort
+      .b-results-sort__item data-sort="stars"
+        .b-results-sort__item__title  Количество звёзд
+      .b-results-sort__item data-sort="rating"
+        .b-results-sort__item__title Оценка гостей
+      .b-results-sort__item data-sort="price"
+        .b-results-sort__item__title Цена
+      .b-results-sort__item data-sort="distance"
+        .b-results-sort__item__title Удалённость
+
+    .b-results-fav-filter
+      .b-results-fav-filter__title Показать
+      .b-results-fav-filter__heart.sprite.sprite_heart-fav 1
+      .b-results-fav-filter__title отель
+
+
+  ul.b-results__items#results-items
+
+    -for i in 1..10
+
+      - stars = Random.rand(6).to_s
+      - rating = 5+Random.rand(5)+Random.rand(10).to_f/10
+      - price = 500+Random.rand(2000)
+      - distance = Random.rand(100)
+
+      li.b-hotel-card class=('b-hotel-card_action' if i <= 3) data-stars=stars data-rating=rating data-price=price data-distance=distance data-id=i
+
+        .b-hotel-card__stars class=('b-hotel-card__stars_'+stars)
+
+        a.b-hotel-card__img.js-hover href="#"
+          img src="build/img/dummy-house_#{Random.rand(3).to_s}.jpg"
+
+        a.b-hotel-card__title.js-hover href="#" Отель Парк Яхрома
+
+        .b-hotel-card__info
+          .b-hotel-card__info__distance #{distance} км от МКАД
+          .b-hotel-card__info__score
+            ="#{['Нормальный отель','Хороший отель','Отличный отель'][Random.rand(3)]},"
+            span.b-hotel-card__info__score__value #{rating}
+
+        .b-hotel-card__desc Бесплатный чай/кофе, Гладильные услуги, Диетическое меню (по запросу), Интернет, Люкс для новобрачных, Места для курения, Номера для некурящих, Отель для некурящих, Отопление, Парковка, Ресторан, Стиральная машина, Упакованные завтраки/обеды, Холодильник.
+
+        .b-hotel-card__buy
+          .b-hotel-card__buy__wrap
+            .b-hotel-card__buy__price от <span class="value">#{price}</span> <span class="currency">руб</span>
+            .b-hotel-card__buy__reservation Забронировать
+
+        .b-hotel-card__heart.sprite.sprite_heart-empty
+
+      -if i == 6
+        a.b-results-banner href="#"
+          .b-results-banner__face
+

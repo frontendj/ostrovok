@@ -1,0 +1,74 @@
+doctype html
+html
+  head
+    title Островок - Подмосковье
+    meta charset="utf-8"
+    link rel="stylesheet" href="build/css/core.css"
+    script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"
+
+
+  body
+
+    javascript:
+      window.data = {
+
+        contacts: [{
+          country: 'России',
+          phones: [{
+            desc: 'по России',
+            value: '8 800 200-31-81'
+          }, {
+            desc: 'из Москвы',
+            value: '<span class="plus">+</span>7 (495) 539-31-81'
+          }]
+        },{
+          country: 'Германии',
+          phones: [{
+            desc: 'в Германии',
+            value: '<span class="plus">+</span>49 500 123-56-73'
+          }]
+        }, {
+          country: 'Украины',
+          phones: [{
+            desc: 'в Украине',
+            value: '<span class="plus">+</span>380 200 638-111'
+          }]
+        }],
+
+        currencyRate: {
+
+          'RUR' : {
+            rate: 1,
+            title: 'руб'
+          },
+          'USD': {
+            rate: 38,
+            title: '$'
+          },
+          'EUR': {
+            rate: 50,
+            title: '€'
+          }
+        }
+
+      }
+
+
+    == Slim::Template.new('src/slim/_header.slim').render
+    == Slim::Template.new('src/slim/_promo.slim').render
+
+    .b-content.container
+      .b-content__side== Slim::Template.new('src/slim/_filter.slim').render
+      .b-content__main
+        .b-map#map_canvas
+
+        == Slim::Template.new('src/slim/_results.slim').render
+
+    == Slim::Template.new('src/slim/_footer.slim').render
+
+
+    script async=true src="http://api-maps.yandex.ru/1.1/index.xml?key=AKFNH1IBAAAAJaOUUgIA_15Ezn8bRzd2Yx368O2ivVfQP_4AAAAAAAAAAAACrL2d0XW5xoib5k2czQSLrws0aw==&loadByRequire=1"
+    script src="build/js/jquery-ui-1.10.4.custom.min.js"
+    script src="build/js/jquery-ui-datepicker.ru.js"
+    script src="build/js/ion.rangeSlider.min.js"
+    script src="build/js/core.js"

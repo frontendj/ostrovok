@@ -1,0 +1,37 @@
+=bg($path)
+  width: image-width($path)
+  height: image-height($path)
+  background: inline-image($path) no-repeat
+
+=dim($path)
+  width: image-width($path)
+  height: image-height($path)
+
+=clearfix
+  *zoom: 1
+  &:before, &:after
+    content: " "
+    display: table
+  &:after
+    clear: both
+
+=link-colors($normal, $hover: false, $active: false, $visited: false, $focus: false)
+  color: $normal
+  @if $visited
+    &:visited
+      color: $visited
+  @if $focus
+    &:focus
+      color: $focus
+  @if $hover
+    &:hover, &.js-hover
+      color: $hover
+  @if $active
+    &:active
+      color: $active
+
+=opacity($trans)
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$trans * 100})"
+  filter: alpha(opacity=($trans * 100))
+  opacity: $trans
+

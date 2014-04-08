@@ -1,0 +1,39 @@
+.b-header
+  text-align: left
+  position: relative
+  z-index: 10
+
+.b-header, .b-header .to-right
+  height: 66px
+  &:before
+    content: ''
+    +inline-block
+    width:  1px
+    height:  66px
+
+.b-header__part
+  +inline-block
+  position: relative
+
+.b-header__part_contacts
+  padding-left: 15px
+  @extend %b-header-splitter
+
+.b-header__part_auth
+  margin-left: 15px
+  padding-left: 15px
+  font-size:  0
+  @extend %b-header-splitter
+
+%b-header-splitter
+  &:before
+    content: ''
+    position: absolute
+    left:  0
+    height:  56px
+    top: 50%
+    margin-top: -28px
+    width:  1px
+    background: $field-border-bottom-color
+    border:  1px solid #FEFFFF
+    border-width: 0 1px

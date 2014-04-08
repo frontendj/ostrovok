@@ -1,0 +1,33 @@
+.b-results-fav-filter
+  color: #E90F00
+  +inline-block
+  float: right
+  height: 35px
+  line-height: 35px
+  &:hover
+    .b-results-fav-filter__title
+      border-bottom-color: transparent
+
+.b-results-fav-filter__title
+  font-size: 12px
+  line-height: 14px
+  +inline-block
+  border-bottom: 1px dotted lighten(#E90F00,40%)
+  padding-right: 10px
+  margin-right: -7px
+  position: relative
+  z-index: 1
+  cursor: pointer
+
+.b-results-fav-filter__heart
+  line-height: 31px
+  color: white
+  text-align: center
+  font-size: 14px
+  z-index: 5
+  position: relative
+  cursor: pointer
+
+.b-results-fav-filter__heart+.b-results-fav-filter__title
+  padding: 0 0 0 10px
+  margin: 0 0 0 -7px

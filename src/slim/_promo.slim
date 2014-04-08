@@ -1,0 +1,45 @@
+.b-promo
+  .container
+
+    nav.b-top-nav
+      a.b-top-nav__item href="#" О компании
+      a.b-top-nav__item href="#" Блог
+      a.b-top-nav__item href="#" Пресс-центр
+      a.b-top-nav__item href="#" Помощь
+
+    .b-promo__title
+      'Поиск и бронирование отелей в
+      span Подмосковье
+
+    form.b-main-search#main-search action="" method="get"
+      .b-main-search__wrap.b-main-search__wrap_from
+        input.b-main-search__input.js-date-from placeholder="31 декабря" data-lang="ru" data-years="2013-2014" data-sundayfirst="false"
+      =="&#151;"
+      .b-main-search__wrap.b-main-search__wrap_to
+        input.b-main-search__input.js-date-to placeholder="5 января"
+      .b-main-search__wrap.b-main-search__wrap_people
+        .b-main-search__wrap__comment Взрослых
+        input.b-main-search__input#main-search-adults maxlength="2" value="2" data-allow-nil="false"
+        span.change.change_more +
+        span.change.change_less -
+      ="и"
+      .b-main-search__wrap.b-main-search__wrap_people
+        .b-main-search__wrap__comment Детей
+        input.b-main-search__input.empty#main-search-children maxlength="2" value="0"
+        span.change.change_more +
+        span.change.change_less -
+
+      .b-main-search__wrap.b-main-search__wrap_submit
+        button.b-main-search__submit Найти отели
+
+
+    .b-promo-links
+      .b-promo-links__item
+        a.b-promo-links__item__title href="#" Все отели Подмосковья
+        .b-promo-links__item__desc Крупнейшая база загородных отелей
+      .b-promo-links__item
+        a.b-promo-links__item__title href="#" Гарантируем лучшие цены
+        .b-promo-links__item__desc Вернём три разницы, если найдёте дешевле
+      .b-promo-links__item
+        a.b-promo-links__item__title href="#" Круглосуточная поддержка
+        .b-promo-links__item__desc Звоните бесплатно из любой страны

@@ -1,0 +1,127 @@
+.b-filter
+
+  .b-filter-section.b-filter-section_search.b-filter-section_no-border
+    input.b-input.b-filter__search type="search" placeholder="Название отеля" value=""
+
+  .b-filter-section
+
+    .b-filter-section__title Цена за одну ночь
+
+    .form-wrap
+      input.b-input.b-filter__price.b-filter__price_from#price-range-from value="600"
+      '&#151;
+      input.b-input.b-filter__price.b-filter__price_to#price-range-to value="5000"
+      '&nbsp;руб.
+
+    .slider-wrap
+      input type="text" id="price-range" value=""
+
+    .form-wrap
+
+      span.label Оплата:
+
+      label.checkbox-inl
+        input type="radio" name="payment-at" value="0"
+        'до заезда
+
+      label.checkbox-inl
+        input type="radio" name="payment-at" value="1"
+        'в отеле
+
+  .b-filter-section.b-filter-section_stars
+    .b-filter-section__title Количество звёзд
+
+    .form-wrap
+
+      label.checkbox-vert
+        span.label 0
+        input type="checkbox"
+
+      label.checkbox-vert
+        span.label 1
+        input type="checkbox"
+
+      label.checkbox-vert
+        span.label 2
+        input type="checkbox"
+
+      label.checkbox-vert
+        span.label 3
+        input type="checkbox"
+
+      label.checkbox-vert
+        span.label 4
+        input type="checkbox"
+
+      label.checkbox-vert
+        span.label 5
+        input type="checkbox"
+
+
+  .b-filter-section
+    .b-filter-section__title Удалённость
+
+    input.b-input.b-filter__distance
+    'км от
+    select.b-select.b-filter__distance-from
+      option value="0" МКАД
+      option value="0" центра
+
+  .b-filter-section
+    .b-filter-section__title Оценка гостей
+
+    select
+      option value="0" Любая
+      option value="5" ✭✭✭✭✭
+      option value="4" ✭✭✭✭
+      option value="3" ✭✭✭
+      option value="2" ✭✭
+      option value="1" ✭
+
+  .b-filter-section
+    .b-filter-section__title
+      'Питание
+      span.b-help-icon ?
+
+    label.checkbox
+      input type="checkbox"
+      'Только завтрак
+
+    label.checkbox
+      input type="checkbox"
+      'Завтрак и ужин
+
+  .b-filter-section
+    .b-filter-section__title Тематика
+
+    label.checkbox
+      input type="checkbox"
+      'Новый год
+
+    label.checkbox
+      input type="checkbox"
+      'Семейный отдых
+
+  .b-filter-section.b-filter-section_no-border
+
+    .b-filter-section__title Дополнительно в отеле
+
+    label.checkbox
+      input type="checkbox"
+      'Интернет
+
+    label.checkbox
+      input type="checkbox"
+      'Крытый бассейн
+
+    label.checkbox
+      input type="checkbox"
+      'Открытый бассейн
+
+    label.checkbox
+      input type="checkbox"
+      'Анимация
+
+    label.checkbox
+      input type="checkbox"
+      'Наличие коттеджа

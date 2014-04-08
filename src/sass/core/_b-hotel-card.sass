@@ -1,0 +1,200 @@
+.b-hotel-card
+  width: 100%
+  text-align: left
+  border: 1px solid $field-border-color
+  border-bottom: 1px solid #BDBDBF
+  margin-top: 14px
+  background: white
+  position: relative
+  overflow: hidden
+  height: 105px
+  padding: 5px 190px 5px 165px
+  &:first-child
+    margin-top: 0
+  &:before
+    position: absolute
+    height:  15px
+    left: 165px
+    right:  190px
+    z-index: 20
+    content: ''
+    +background-image(linear-gradient(rgba(#FDC900, 0), white))
+    bottom: 0
+
+.b-hotel-card_action
+  &:after
+    content: ''
+    @extend .sprite
+    @extend .sprite_action
+    position: absolute
+    z-index: 10
+    right: 150px
+    top: 0
+
+.b-hotel-card__img
+  width: 154px
+  height: 105px
+  position: absolute
+  left: 0
+  top: 0
+  overflow: hidden
+
+.b-hotel-card__title
+  position: relative
+  z-index: 20
+  font-size: 24px
+  font-family: $font-family-title
+  line-height: 17px
+  +inline-block
+  &:link
+    color: $link-color
+    border-bottom:  1px solid $link-color
+    border-bottom-color: rgba($link-color, 0.4)
+  &:visited
+    color: $link-visited-color
+    border-bottom-color:  $link-visited-color
+    border-bottom-color: rgba($link-visited-color, 0.4)
+  &:hover
+    color: $link-hover-color
+    border-bottom-color: transparent
+
+.b-hotel-card__stars
+  margin-bottom: 6px
+  margin-top: -4px
+  &:before
+    color: $logo-blue
+    font-size: 10px
+  &:after
+    color: $desc-color
+    font-size: 10px
+
+@for $i from 0 through 5
+
+  $active_content: ""
+  $passive_content: ""
+  $chr: '\2605'
+
+  @for $j from 1 through $i
+    $active_content: $active_content + $chr
+
+  @for $k from 1 through 5-$i
+    $passive_content: $passive_content + $chr
+
+
+  .b-hotel-card__stars_#{$i}
+
+    &:before
+      content: $active_content
+
+    &:after
+      content: $passive_content
+
+.b-hotel-card__info
+  padding-top: 6px
+
+.b-hotel-card__info__distance
+  font-size: 11px
+  border-bottom: 1px dotted
+  color: $link-color
+  +inline-block
+  margin-left: 13px
+  position: relative
+  cursor: pointer
+  line-height: 12px
+  &:hover
+    border-bottom-color: transparent
+  &:before
+    content: ''
+    @extend .sprite
+    @extend .sprite_map-pointer
+    position: absolute
+    left: -13px
+    top: 1px
+
+.b-hotel-card__info__score
+  color: $gray-dark
+  font-size: 11px
+  line-height: 12px
+  +inline-block
+  margin-left: 6px
+  &:before
+    content: '\2022'
+    margin-right: 4px
+    font-weight: bold
+
+.b-hotel-card__info__score__value
+  font-weight: bold
+
+.b-hotel-card__desc
+  color: $gray-dark
+  font-size: 11px
+  line-height: 13px
+  margin-top: 8px
+  overflow: hidden
+
+.b-hotel-card__buy
+  width: 190px
+  height: 95px
+  position: absolute
+  right: 0
+  top: 50%
+  margin-top: -50px
+  border-left: 1px solid $field-border-color
+  text-align: center
+  &:before
+    content: ''
+    +inline-block
+    height: 95px
+    width: 1px
+
+.b-hotel-card__buy__wrap
+  +inline-block
+
+.b-hotel-card__buy__reservation
+  height: 31px
+  padding: 0 15px
+  line-height: 32px
+  +inline-block
+  margin-top: 6px
+  text-align: center
+  text-transform: uppercase
+  font-size: 14px
+  +border-radius(5px)
+  cursor: pointer
+  font-weight: bold
+  background: #3988E4
+  +background-image(linear-gradient(#3988E4, #0157C4))
+  +box-shadow(rgba(white, 0.5) 0px 1px 2px 0px inset, rgba(white, 0.5) 0px 0px 2px 0px inset)
+  &:hover
+    background-image: none
+  +text-shadow(black 0px 1px 0)
+  color: white
+  border: 1px solid #696A6E
+  border-bottom-color: #383C3D
+  .b-hotel-card_action &
+    background: #FDC900
+    +background-image(linear-gradient(#FDC900, #F09200))
+    +text-shadow(#F5CA60 0px 1px 0)
+    color: #592100
+    &:hover
+      background-image: none
+    border: 1px solid #E6B46B
+    border-bottom-color: #B4721C
+
+.b-hotel-card__heart
+  position: absolute
+  right: 10px
+  top: 10px
+  cursor: pointer
+
+.b-hotel-card__buy__price
+  font-size: 12px
+  color: $gray-dark
+  .b-hotel-card_action &
+    color: #592100
+  .value
+    font-size: 33px
+    color: black
+    .b-hotel-card_action &
+      color: #FB8500
+

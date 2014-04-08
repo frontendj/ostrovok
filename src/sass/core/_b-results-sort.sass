@@ -1,0 +1,52 @@
+.b-results-sort
+  height: 35px
+  line-height: 35px
+  padding: 0 10px
+  +inline-block
+  background: #ECECEC
+  +box-shadow(rgba(gray, .1) 0 3px 2px 0px inset)
+  +border-radius(3px)
+
+.b-results-sort__item
+  +inline-block
+  margin-left: 14px
+  height: 21px
+  line-height: 17px
+  padding: 0 6px
+  cursor: pointer
+  &:first-child
+    margin-left: 0
+  &:hover
+    .b-results-sort__item__title
+      border-bottom-color: transparent
+
+
+.b-results-sort__item__title
+  border-bottom: 1px dotted
+  color: #2F57B3
+  text-transform: uppercase
+  font-size: 10px
+  line-height: 14px
+  +inline-block
+
+
+.b-results-sort__item.active
+  background: #5E89CA
+  +border-radius(3px)
+  &:after
+    content: '\2191'
+    margin-left: 3px
+    color:  white
+    font-size: 11px
+    line-height: 12px
+    +inline-block
+  .b-results-sort__item__title
+    color: white
+
+.b-results-sort__item.active.down
+  &:after
+    content: '\2191'
+
+.b-results-sort__item.active.up
+  &:after
+    content: '\2193'

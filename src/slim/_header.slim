@@ -1,0 +1,50 @@
+.b-header.container
+
+   a.b-logo href="/"
+     .b-logo__img.sprite.sprite_logo Ostrovok.ru
+     .b-logo__title Бронирование отелей
+
+   .b-header__part.b-header__part_contacts
+
+     .b-header-phones#header-phones
+       .b-header-phones__item
+         .b-header-phones__item__value 8 800 200-31-81
+         .b-header-phones__item__desc по России
+       .b-header-phones__item
+         .b-header-phones__item__value <span class="plus">+</span>7 (495) 539-31-81
+         .b-header-phones__item__desc из Москвы
+
+     .b-header-phone-selector#phone-selector
+       'Как звонить из
+       span.b-header-phone-selector__country-place
+        'других стран
+        ul.b-header-phone-selector__countries data-role="countries"
+
+   .to-right
+
+     .b-header__part.b-header__part_settings
+
+       .b-header-selector.b-header-selector_currency
+        .b-header-selector__wrap
+          .b-header-selector__item.active data-value="RUR" <span>RUR</span> Российский рубль
+          .b-header-selector__item data-value="USD" <span>USD</span> Американский доллар
+          .b-header-selector__item data-value="EUR" <span>EUR</span> Евро
+          span.sprite.sprite_down.arrow
+
+       .b-header-selector.b-header-selector_lang
+        .b-header-selector__wrap
+          a.b-header-selector__item.active href="?lang=ru"
+            span.sprite.sprite_fl_rus.flag
+            'Русский
+          a.b-header-selector__item href="?lang=en"
+            span.sprite.sprite_fl_gbr.flag
+            'English
+          a.b-header-selector__item href="?lang=de"
+            span.sprite.sprite_fl_deu.flag
+            'German
+          span.sprite.sprite_down.arrow
+
+
+     .b-header__part.b-header__part_auth.b-header-auth
+       .b-header-auth__btn.b-header-auth__btn_reg Регистрация
+       .b-header-auth__btn.b-header-auth__btn_login Вход

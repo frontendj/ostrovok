@@ -1,0 +1,80 @@
+.b-filter-section
+  position: relative
+  margin: 14px 0 0 0
+  padding-bottom: 20px
+  font-size: 12px
+  &:first-child
+    margin-top: 0
+  &:after
+    content: ''
+    display: block
+    position: absolute
+    left:  0
+    bottom:  0
+    height:  1px
+    width:  100%
+    background: $field-border-bottom-color
+    border:  1px solid #FEFFFF
+    border-width: 1px 0
+  .slider-wrap
+    border: 1px solid $field-border-color
+    +border-radius(3px)
+    padding: 2px 4px
+    margin:  10px 0
+
+  .form-wrap
+    width: 100%
+    font-size: 12px
+
+  .label
+    +inline-block
+    margin-right: 5px
+
+  .checkbox
+    font-size: 12px
+    display: block
+    margin: 8px 0 0 0
+    input
+      margin-right: 4px
+
+  .checkbox-inl
+    font-size: 12px
+    margin: 0 0 0 5px
+    +inline-block
+    input
+      margin-right: 4px
+
+.b-filter-section_stars
+  .form-wrap
+    white-space: nowrap
+    margin-left: -11px
+    .checkbox-vert
+      +inline-block
+      text-align: center
+      width: 37px
+      input
+        margin: 2px 0 0 0
+      .label
+        display: block
+        margin-right: 0
+
+.b-filter-section_no-border
+  &:after
+    display: none
+
+.b-filter-section_search
+  padding-bottom: 3px
+
+.b-filter-section__title
+  font-size: 14px
+  color: #2C2C2C
+  font-weight: bold
+  margin-bottom: 10px
+
+
+
+
+
+
+
+
