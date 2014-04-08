@@ -73,7 +73,14 @@ module.exports = (grunt) ->
           }
           {
             expand: true
-            src: ["src/js/*.img"]
+            src: ["src/js/*.js"]
+            dest: "build/js"
+            filter: "isFile"
+            flatten: true
+          }
+          {
+            expand: true
+            src: ["src/js/*.json"]
             dest: "build/js"
             filter: "isFile"
             flatten: true

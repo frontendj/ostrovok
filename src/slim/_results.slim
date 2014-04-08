@@ -17,41 +17,46 @@
       .b-results-fav-filter__heart.sprite.sprite_heart-fav 1
       .b-results-fav-filter__title отель
 
-
   ul.b-results__items#results-items
 
-    -for i in 1..10
+  script id="hotel-template" type="text/x-handlebars-template"
 
-      - stars = Random.rand(6).to_s
-      - rating = 5+Random.rand(5)+Random.rand(10).to_f/10
-      - price = 500+Random.rand(2000)
-      - distance = Random.rand(100)
+    '{{#hotels}}
 
-      li.b-hotel-card class=('b-hotel-card_action' if i <= 3) data-stars=stars data-rating=rating data-price=price data-distance=distance data-id=i
+    '{{#ifCond @index 3}}
+    a.b-results-banner href="#"
+      .b-results-banner__face
+    '{{/ifCond}}
 
-        .b-hotel-card__stars class=('b-hotel-card__stars_'+stars)
+    li.b-hotel-card  data-action="{{isAction}}" data-stars="{{stars}}" data-rating="{{rating}}" data-price="{{price}}" data-distance="{{distance}}" data-id="{{id}}"
 
-        a.b-hotel-card__img.js-hover href="#"
-          img src="build/img/dummy-house_#{Random.rand(3).to_s}.jpg"
+      .b-hotel-card__stars class=('b-hotel-card__stars_{{stars}}')
 
-        a.b-hotel-card__title.js-hover href="#" Отель Парк Яхрома
+      a.b-hotel-card__img.js-hover href="#"
+        img src="{{picture}}"
 
-        .b-hotel-card__info
-          .b-hotel-card__info__distance #{distance} км от МКАД
-          .b-hotel-card__info__score
-            ="#{['Нормальный отель','Хороший отель','Отличный отель'][Random.rand(3)]},"
-            span.b-hotel-card__info__score__value #{rating}
+      a.b-hotel-card__title.js-hover href="#"
+        '{{title}}
 
-        .b-hotel-card__desc Бесплатный чай/кофе, Гладильные услуги, Диетическое меню (по запросу), Интернет, Люкс для новобрачных, Места для курения, Номера для некурящих, Отель для некурящих, Отопление, Парковка, Ресторан, Стиральная машина, Упакованные завтраки/обеды, Холодильник.
+      .b-hotel-card__info
+        .b-hotel-card__info__distance
+          '{{distance}} км от МКАД
+        .b-hotel-card__info__score
+          '{{score}},
+          span.b-hotel-card__info__score__value
+            '{{rating}}
 
-        .b-hotel-card__buy
-          .b-hotel-card__buy__wrap
-            .b-hotel-card__buy__price от <span class="value">#{price}</span> <span class="currency">руб</span>
-            .b-hotel-card__buy__reservation Забронировать
+      .b-hotel-card__desc
+        '{{desc}}
 
-        .b-hotel-card__heart.sprite.sprite_heart-empty
+      .b-hotel-card__buy
+        .b-hotel-card__buy__wrap
+          .b-hotel-card__buy__price от <span class="value">{{price}}</span> <span class="currency">руб</span>
+          .b-hotel-card__buy__reservation Забронировать
 
-      -if i == 6
-        a.b-results-banner href="#"
-          .b-results-banner__face
+      .b-hotel-card__heart.sprite.sprite_heart-empty
+    '{{/hotels}}
+
+
+
 

@@ -40,34 +40,52 @@ window.MainPage = (->
 
           sortBy = $(this).data('sort')
 
-          that.sortResults(list, sortBy, sortDirection)
+          that.showHotels(sortBy, sortDirection)
 
 
-    sortResults: (list, sortBy='stars', sortDirection='down') ->
+    sortResults: (list, sortBy, sortDirection = 'down', limit = 10) ->
 
-      rows = list.find(".b-hotel-card").toArray().sort((a, b) ->
+      if sortBy
+        list.sort((a, b) ->
 
-        aWeight = parseFloat($(a).attr('data-'+sortBy))
-        bWeight = parseFloat($(b).attr('data-'+sortBy))
+          aWeight = a[sortBy]
+          bWeight = b[sortBy]
+          if sortDirection == 'down'
+            return -1  if aWeight > bWeight
+            return 1  if aWeight < bWeight
+          else
+            return -1  if aWeight < bWeight
+            return 1  if aWeight > bWeight
+          0
+        )
 
-        if sortDirection == 'down'
-          return -1  if aWeight > bWeight
-          return 1  if aWeight < bWeight
-        else
-          return -1  if aWeight < bWeight
-          return 1  if aWeight > bWeight
-        0
-      )
-
-      tempList = ''
+      resultList = []
       i = 0
-      while i < rows.length
-        tempList = tempList +  rows[i].outerHTML
-        if i == 5
-          tempList = tempList + $('.b-results-banner').html()
+      while i < limit
+        resultList.push(list[i])
         i++
 
-      list.html(tempList)
+      resultList
+
+    prepareTemplates: ->
+      source   = $("#hotel-template").html()
+      @hotel_template = Handlebars.compile(source)
+
+      Handlebars.registerHelper "ifCond", (v1, v2, options) ->
+        return options.fn(this) if v1 is v2
+        options.inverse this
+
+
+    showHotels: (sortBy, sortDirection='down') ->
+
+      list = $('#results-items')
+      hotels = @getHotels(sortBy, sortDirection, 10)
+
+      list.html(@hotel_template({'hotels': hotels})).find('[data-action=true]').addClass('b-hotel-card_action')
+
+
+    getHotels: (sortBy, sortDirection='down', limit = 10)->
+      @sortResults(window.data.hotels, sortBy, sortDirection, limit)
 
     peopleSelector: ->
 
@@ -163,12 +181,18 @@ window.MainPage = (->
       point = new YMaps.GeoPoint(38.166317,55.571287)
 
 
+
+
+
+
   init: ->
 
     _private.setRangeSlider()
     _private.filterSort()
     _private.peopleSelector()
     _private.calendar()
+    _private.prepareTemplates()
+    _private.showHotels()
     @Map.init()
 
 
