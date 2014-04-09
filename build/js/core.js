@@ -2,6 +2,11 @@
   window.MainPage = (function() {
     var _private;
     _private = {
+      filterObject: {},
+      sortObject: {
+        sortBy: null,
+        sortDirection: 'down'
+      },
       setRangeSlider: function() {
         return $("#price-range").ionRangeSlider({
           'type': 'double',
@@ -15,8 +20,8 @@
             value = obj.input[0].value;
             from = value.split(';')[0];
             to = value.split(';')[1];
-            $('#price-range-from').val(from);
-            return $('#price-range-to').val(to);
+            $('#price-range-from').val(from).change();
+            return $('#price-range-to').val(to).change();
           }
         });
       },
@@ -24,35 +29,94 @@
         var list, sortBy, sortDirection, that;
         list = $('#results-items');
         that = this;
-        if (list.length) {
-          sortBy = 'stars';
-          sortDirection = 'down';
-          return $('#results-sort').find('.b-results-sort__item').click(function() {
-            if (!$(this).hasClass('active')) {
-              $(this).addClass('active').siblings().removeClass('active');
-            } else {
-              sortDirection = (sortDirection === "down" ? "up" : "down");
-            }
-            $(this).removeClass('down, up').addClass(sortDirection);
-            sortBy = $(this).data('sort');
-            return that.showHotels(sortBy, sortDirection);
-          });
-        }
+        sortBy = 'stars';
+        sortDirection = 'down';
+        return $('#results-sort').find('.b-results-sort__item').click(function() {
+          if (!$(this).hasClass('active')) {
+            $(this).addClass('active').siblings().removeClass('active');
+          } else {
+            sortDirection = (sortDirection === "down" ? "up" : "down");
+          }
+          $(this).removeClass('down, up').addClass(sortDirection);
+          that.sortObject.sortBy = $(this).data('sort');
+          that.sortObject.sortDirection = sortDirection;
+          return that.showHotels();
+        });
       },
-      sortResults: function(list, sortBy, sortDirection, limit) {
-        var i, resultList;
-        if (sortDirection == null) {
-          sortDirection = 'down';
-        }
+      prepareTemplates: function() {
+        var source;
+        source = $("#hotel-template").html();
+        this.hotel_template = Handlebars.compile(source);
+        return Handlebars.registerHelper("ifCond", function(v1, v2, options) {
+          if (v1 === v2) {
+            return options.fn(this);
+          }
+          return options.inverse(this);
+        });
+      },
+      showHotels: function() {
+        var hotels, list;
+        list = $('#results-items');
+        hotels = this.getHotels(10);
+        return list.html(this.hotel_template({
+          'hotels': hotels
+        })).find('[data-action=true]').addClass('b-hotel-card_action');
+      },
+      getHotels: function(limit) {
+        var filterObject, filteredHotels, hotels, i, sortObject, sortedHotels;
         if (limit == null) {
           limit = 10;
         }
-        if (sortBy) {
-          list.sort(function(a, b) {
+        hotels = window.data.hotels;
+        filterObject = this.filterObject;
+        sortObject = this.sortObject;
+        filteredHotels = [];
+        sortedHotels = [];
+        hotels.forEach(function(hotel) {
+          var isMatching, key;
+          isMatching = true;
+          for (key in filterObject) {
+            if (key === 'price-range-from' && filterObject[key].length) {
+              if (parseInt(hotel.price, 10) < parseInt(filterObject[key][0], 10)) {
+                isMatching = false;
+              }
+            }
+            if (key === 'price-range-to' && filterObject[key].length) {
+              if (parseInt(hotel.price, 10) > parseInt(filterObject[key][0], 10)) {
+                isMatching = false;
+              }
+            }
+            if (key === 'title' && filterObject[key].length && filterObject[key][0].length > 3) {
+              if (hotel.title.toLowerCase().indexOf(filterObject[key][0].toLowerCase()) < 0) {
+                isMatching = false;
+              }
+            }
+            if (key === 'stars' && filterObject[key].length) {
+              if (filterObject[key].indexOf(hotel.stars.toString()) < 0) {
+                isMatching = false;
+              }
+            }
+            if (key === 'distance' && filterObject[key].length) {
+              if (parseInt(filterObject[key], 10) > parseInt(hotel.distance) + 5 || parseInt(filterObject[key]) < parseInt(hotel.distance) - 5) {
+                isMatching = false;
+              }
+            }
+            if (key === 'score' && filterObject[key].length && filterObject[key][0] !== '0') {
+              if (filterObject[key][0] !== hotel.score.replace(/\s/, '+')) {
+                isMatching = false;
+              }
+            }
+          }
+          if (isMatching) {
+            return filteredHotels.push(hotel);
+          }
+        });
+        if (sortObject.sortBy) {
+          filteredHotels.sort(function(a, b) {
             var aWeight, bWeight;
-            aWeight = a[sortBy];
-            bWeight = b[sortBy];
-            if (sortDirection === 'down') {
+            aWeight = a[sortObject.sortBy];
+            bWeight = b[sortObject.sortBy];
+            if (sortObject.sortDirection === 'down') {
               if (aWeight > bWeight) {
                 return -1;
               }
@@ -70,44 +134,12 @@
             return 0;
           });
         }
-        resultList = [];
         i = 0;
-        while (i < limit) {
-          resultList.push(list[i]);
+        while (i < filteredHotels.length && i < limit) {
+          sortedHotels.push(filteredHotels[i]);
           i++;
         }
-        return resultList;
-      },
-      prepareTemplates: function() {
-        var source;
-        source = $("#hotel-template").html();
-        this.hotel_template = Handlebars.compile(source);
-        return Handlebars.registerHelper("ifCond", function(v1, v2, options) {
-          if (v1 === v2) {
-            return options.fn(this);
-          }
-          return options.inverse(this);
-        });
-      },
-      showHotels: function(sortBy, sortDirection) {
-        var hotels, list;
-        if (sortDirection == null) {
-          sortDirection = 'down';
-        }
-        list = $('#results-items');
-        hotels = this.getHotels(sortBy, sortDirection, 10);
-        return list.html(this.hotel_template({
-          'hotels': hotels
-        })).find('[data-action=true]').addClass('b-hotel-card_action');
-      },
-      getHotels: function(sortBy, sortDirection, limit) {
-        if (sortDirection == null) {
-          sortDirection = 'down';
-        }
-        if (limit == null) {
-          limit = 10;
-        }
-        return this.sortResults(window.data.hotels, sortBy, sortDirection, limit);
+        return sortedHotels;
       },
       peopleSelector: function() {
         var decrease, increase;
@@ -188,6 +220,41 @@
             }
           }
         });
+      },
+      deparam: function(query) {
+        var i, key, keyValuePair, map, pairs, value;
+        if (query.slice(0, 1) === "?") {
+          query = query.slice(1);
+        }
+        map = {};
+        if (query !== "") {
+          pairs = query.split("&");
+          i = 0;
+          while (i < pairs.length) {
+            keyValuePair = pairs[i].split("=");
+            key = decodeURIComponent(keyValuePair[0]);
+            value = (keyValuePair.length > 1 ? decodeURIComponent(keyValuePair[1]) : undefined);
+            if (!map[key]) {
+              map[key] = [];
+            }
+            map[key].push(value);
+            i += 1;
+          }
+        }
+        return map;
+      },
+      listenFilter: function() {
+        return $('#filter').on('change', 'input, select', (function(_this) {
+          return function() {
+            if (_this.timer) {
+              clearTimeout(_this.timer);
+            }
+            return _this.timer = setTimeout(function() {
+              _this.filterObject = _this.deparam($('#filter').serialize());
+              _this.showHotels();
+            }, 500);
+          };
+        })(this));
       }
     };
     return {
@@ -221,6 +288,7 @@
         _private.calendar();
         _private.prepareTemplates();
         _private.showHotels();
+        _private.listenFilter();
         this.Map.init();
       }
     };
