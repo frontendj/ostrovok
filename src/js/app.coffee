@@ -45,6 +45,7 @@ window.App =
         if parent.hasClass('b-header-selector_currency')
           currency = $(this).data 'value'
           App.recalculatePrice currency
+          console.log 'xxx'
       else
         parent.addClass 'active'
         e.preventDefault()
@@ -62,7 +63,7 @@ window.App =
     $('#results-items .b-hotel-card').each ->
       price = parseInt($(this).data('price'))
       newPrice = Math.ceil((price/rate))
-      $(this).find('.b-hotel-card__price').find('.value').text(newPrice).end().find('.currency').text(title)
+      $(this).find('.b-hotel-card__buy__price').find('.value').text(newPrice).end().find('.currency').text(title)
 
 
 $ -> App.initialize()
