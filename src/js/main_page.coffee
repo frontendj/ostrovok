@@ -2,6 +2,12 @@ window.MainPage = (->
 
   _private =
 
+    filterObject: {}
+
+    sortObject:
+      sortBy: null
+      sortDirection: 'down'
+
     setRangeSlider: ->
 
       $("#price-range").ionRangeSlider
@@ -16,56 +22,30 @@ window.MainPage = (->
           from = value.split(';')[0]
           to = value.split(';')[1]
 
-          $('#price-range-from').val from
-          $('#price-range-to').val to
+          $('#price-range-from').val(from).change()
+          $('#price-range-to').val(to).change()
 
     filterSort: ->
       list = $('#results-items')
 
       that = @
 
-      if list.length
+      sortBy = 'stars'
+      sortDirection = 'down'
 
-        sortBy = 'stars'
-        sortDirection = 'down'
+      $('#results-sort').find('.b-results-sort__item').click ->
 
-        $('#results-sort').find('.b-results-sort__item').click ->
+        if !$(this).hasClass 'active'
+          $(this).addClass('active').siblings().removeClass('active')
+        else
+          sortDirection = (if (sortDirection is "down") then "up" else "down")
 
-          if !$(this).hasClass 'active'
-            $(this).addClass('active').siblings().removeClass('active')
-          else
-            sortDirection = (if (sortDirection is "down") then "up" else "down")
+        $(this).removeClass('down, up').addClass(sortDirection)
 
-          $(this).removeClass('down, up').addClass(sortDirection)
+        that.sortObject.sortBy = $(this).data('sort')
+        that.sortObject.sortDirection = sortDirection
 
-          sortBy = $(this).data('sort')
-
-          that.showHotels(sortBy, sortDirection)
-
-
-    sortResults: (list, sortBy, sortDirection = 'down', limit = 10) ->
-
-      if sortBy
-        list.sort((a, b) ->
-
-          aWeight = a[sortBy]
-          bWeight = b[sortBy]
-          if sortDirection == 'down'
-            return -1  if aWeight > bWeight
-            return 1  if aWeight < bWeight
-          else
-            return -1  if aWeight < bWeight
-            return 1  if aWeight > bWeight
-          0
-        )
-
-      resultList = []
-      i = 0
-      while i < limit
-        resultList.push(list[i])
-        i++
-
-      resultList
+        that.showHotels()
 
     prepareTemplates: ->
       source   = $("#hotel-template").html()
@@ -76,16 +56,70 @@ window.MainPage = (->
         options.inverse this
 
 
-    showHotels: (sortBy, sortDirection='down') ->
+    showHotels: ->
 
       list = $('#results-items')
-      hotels = @getHotels(sortBy, sortDirection, 10)
+      hotels = @getHotels(10)
 
       list.html(@hotel_template({'hotels': hotels})).find('[data-action=true]').addClass('b-hotel-card_action')
 
 
-    getHotels: (sortBy, sortDirection='down', limit = 10)->
-      @sortResults(window.data.hotels, sortBy, sortDirection, limit)
+    getHotels: (limit = 10) ->
+
+      hotels = window.data.hotels
+      filterObject = @filterObject
+      sortObject = @sortObject
+      filteredHotels = []
+      sortedHotels = []
+
+      hotels.forEach (hotel) ->
+        isMatching = true
+
+        for key of filterObject
+
+          if key == 'price-range-from' && filterObject[key].length
+            if parseInt(hotel.price, 10) < parseInt(filterObject[key][0], 10)
+              isMatching = false
+          if key == 'price-range-to' && filterObject[key].length
+            if parseInt(hotel.price, 10) > parseInt(filterObject[key][0], 10)
+              isMatching = false
+          if key == 'title' && filterObject[key].length && filterObject[key][0].length > 3
+            if hotel.title.toLowerCase().indexOf(filterObject[key][0].toLowerCase()) < 0
+              isMatching = false
+          if key == 'stars' && filterObject[key].length
+            if filterObject[key].indexOf(hotel.stars.toString()) < 0
+              isMatching = false
+          if key == 'distance' && filterObject[key].length
+            if parseInt(filterObject[key],10) >  parseInt(hotel.distance)+5 || parseInt(filterObject[key]) <  parseInt(hotel.distance)-5
+              isMatching = false
+          if key == 'score' && filterObject[key].length && filterObject[key][0] != '0'
+            if filterObject[key][0] != hotel.score.replace(/\s/, '+')
+              isMatching = false
+
+        if isMatching
+          filteredHotels.push(hotel)
+
+      if sortObject.sortBy
+        filteredHotels.sort((a, b) ->
+
+          aWeight = a[sortObject.sortBy]
+          bWeight = b[sortObject.sortBy]
+          if sortObject.sortDirection == 'down'
+            return -1  if aWeight > bWeight
+            return 1  if aWeight < bWeight
+          else
+            return -1  if aWeight < bWeight
+            return 1  if aWeight > bWeight
+          0
+        )
+
+      i = 0
+      while i < filteredHotels.length && i < limit
+        sortedHotels.push(filteredHotels[i])
+        i++
+
+      sortedHotels
+
 
     peopleSelector: ->
 
@@ -154,6 +188,34 @@ window.MainPage = (->
 
           $('.js-date-from').datepicker('show') if $('.js-date-from').val() == ''
 
+    deparam: (query) ->
+
+      query = query.slice(1)  if query.slice(0, 1) is "?"
+      map = {}
+      if query != ""
+        pairs = query.split("&")
+        i = 0
+
+        while i < pairs.length
+          keyValuePair = pairs[i].split("=")
+          key = decodeURIComponent(keyValuePair[0])
+          value = (if (keyValuePair.length > 1) then decodeURIComponent(keyValuePair[1]) else `undefined`)
+          if !map[key]
+            map[key] = []
+          map[key].push(value)
+          i += 1
+      map
+
+
+    listenFilter: ->
+      $('#filter').on 'change', 'input, select', =>
+        clearTimeout @timer  if @timer
+        @timer = setTimeout(=>
+          @filterObject = @deparam($('#filter').serialize())
+          @showHotels()
+          return
+        , 500)
+
   Map:
 
     init: ->
@@ -180,11 +242,6 @@ window.MainPage = (->
 
       point = new YMaps.GeoPoint(38.166317,55.571287)
 
-
-
-
-
-
   init: ->
 
     _private.setRangeSlider()
@@ -193,6 +250,7 @@ window.MainPage = (->
     _private.calendar()
     _private.prepareTemplates()
     _private.showHotels()
+    _private.listenFilter()
     @Map.init()
 
 
