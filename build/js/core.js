@@ -349,6 +349,7 @@
           if (parent.hasClass('b-header-selector_currency')) {
             currency = $(this).data('value');
             App.recalculatePrice(currency);
+            console.log('xxx');
           }
         } else {
           parent.addClass('active');
@@ -368,7 +369,7 @@
         var newPrice, price;
         price = parseInt($(this).data('price'));
         newPrice = Math.ceil(price / rate);
-        return $(this).find('.b-hotel-card__price').find('.value').text(newPrice).end().find('.currency').text(title);
+        return $(this).find('.b-hotel-card__buy__price').find('.value').text(newPrice).end().find('.currency').text(title);
       });
     }
   };
